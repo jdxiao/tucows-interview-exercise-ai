@@ -1,12 +1,25 @@
 # 🧠 AI Coding Challenge: Knowledge Assistant for Support Team
 
-Welcome to the AI engineering challenge! This is part of the interview process for the AI Engineer role (1–3 years experience). The goal is to design a minimal **LLM-powered RAG system** that helps a support team respond to customer tickets efficiently using relevant documentation.
+This project implements a minimal **LLM-powered RAG system** that helps a support team respond to customer tickets efficiently using relevant documentation.
 
 ---
 
-## 📌 Problem Statement
+## Project Structure
 
-You will build a **Knowledge Assistant** that can analyze customer support queries and return structured, relevant, and helpful responses. The assistant should use a **Retrieval-Augmented Generation (RAG)** pipeline powered by an **LLM** and follow the **Model Context Protocol (MCP)** to produce structured output.
+```
+├── README.md
+├── src/
+│   ├── api/           # FastAPI server and endpoints
+│   ├── ingest/        # Document ingestion, chunking, and embedding
+│   ├── llm/           # LLM client
+│   ├── rag/           # RAG pipeline
+│   ├── index/         # FAISS vector index creation and search utilities
+│   └── utils/         # Configuration, logging, and helper functions
+└── data/
+    ├── raw_docs/      # Original documents
+    ├── index.faiss    # FAISS vector index
+    └── metadata.json  # Mapping of chunk IDs to source documents
+```
 
 ### 🎯 Sample Input (Support Ticket):
 ```
@@ -52,28 +65,3 @@ My domain was suspended and I didn’t get any notice. How can I reactivate it?
 - LLMs: OpenAI, Ollama, Local LLM, or APIs
 - API: FastAPI (Python), Gin/Fiber (Go)
 - Docker Compose
-
-## 📝 Scoring Criteria (Total: 100 Points)
-
-| Criteria                     | Description                                                                 | Points |
-|------------------------------|-----------------------------------------------------------------------------|--------|
-| Correctness & Functionality | Does the assistant generate accurate and relevant responses?                 | 35     |
-| RAG Architecture           | Is the retrieval pipeline well-structured, efficient, and properly integrated? | 20     |
-| Prompt Design (MCP)        | Is the prompt construction clear, structured, and aligned with MCP principles? | 15     |
-| Code Quality & Modularity | Is the code clean, readable, modular, and maintainable and covered with unit tests?                      | 20     |
-| Documentation             | Is the `README.md` clear, with setup instructions and design explanation?    | 10     |
-|                             | **Total**                                                                   | **100** |
-
-## 🚀 Getting Started
-- Fork this repository (do not clone directly)
-- Work within your forked copy
-- Add your code in /src and include a clear README.md with setup instructions
-- Commit your changes regularly
-- Once complete, follow the submission instructions below
-
-## 📬 Submission Instructions
-- You have 1 week to complete the challenge.
-- We expect this to take around 1–2 focused days of work.
-- Once complete:
-  - Push your forked repo to GitHub
-  - Submit the repository link through the portal in the original email.

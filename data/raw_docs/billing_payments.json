@@ -1,20 +1,20 @@
 {
-    "policy_id": "Billing & Payments Policy",
+    "policy": "Billing & Payments Policy",
     "description": "Synthetic policy outlining billing and payment procedures.",
 
     "sections": [
         {
-            "section_id": "3.1",
+            "section": "3.1",
             "title": "Accepted Payment Methods",
             "text": "We accept credit cards, debit cards, PayPal, wire transfers, and select alternative payment methods depending on region."
         },
         {
-            "section_id": "3.2",
+            "section": "3.2",
             "title": "Billing Cycles",
             "text": "Subscriptions are billed on a recurring monthly or annual basis unless manually canceled."
         },
         {
-            "section_id": "3.3",
+            "section": "3.3",
             "title": "Overdue Payments",
             "text": "Accounts with overdue balances may have services restricted until the outstanding amount is settled."
         }

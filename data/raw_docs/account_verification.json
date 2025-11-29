@@ -1,6 +1,6 @@
 
 {
-    "policy_id": "Account Verification & Security Policy",
+    "policy": "Account Verification & Security Policy",
     "description": "Synthetic policy detailing account verification and security measures.",
 
     "sections": [

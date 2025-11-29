@@ -1,5 +1,5 @@
 {
-    "policy_id": "Refund Policy",
+    "policy": "Refund Policy",
     "description": "Synthetic policy outlining the refund process for canceled orders.",
 
     "sections": [

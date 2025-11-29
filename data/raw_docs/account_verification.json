@@ -1,0 +1,23 @@
+
+{
+    "policy_id": "Account Verification & Security Policy",
+    "description": "Synthetic policy detailing account verification and security measures.",
+
+    "sections": [
+        {
+        "section": "2.1",
+        "title": "Verification Requirements",
+        "text": "Users may be required to verify their identity using government-issued identification or email-based verification depending on account activity."
+        },
+        {
+        "section": "2.2",
+        "title": "Two-Factor Authentication",
+        "text": "Two-factor authentication must be enabled for accounts exhibiting unusual login activity or accessing sensitive services."
+        },
+        {
+        "section": "2.3",
+        "title": "Security Holds",
+        "text": "Accounts may be placed on temporary hold if unauthorized access is suspected. Users will be notified and must verify ownership to restore access."
+        }
+    ]
+}

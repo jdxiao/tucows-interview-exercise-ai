@@ -1,0 +1,27 @@
+{
+    "policy_id": "Refund Policy",
+    "description": "Synthetic policy outlining the refund process for canceled orders.",
+
+    "sections": [
+        {
+            "section": "1.1",
+            "title": "Eligibility for Refund",
+            "text": "Refunds may be issued for canceled orders if the cancellation occurs within the allowable refund window specified at the time of purchase."
+        },
+        {
+            "section": "1.2",
+            "title": "Refund Processing Time",
+            "text": "Refunds are typically processed within 5–7 business days after the cancellation is approved. Processing time may vary depending on the payment provider."
+        },
+        {
+            "section": "1.3",
+            "title": "Payment Method for Refunds",
+            "text": "All refunds are sent back to the original payment method. Alternate refund destinations cannot be requested for security reasons."
+        },
+        {
+            "section": "1.4",
+            "title": "Refund Denials",
+            "text": "Refunds may be denied if an order has already been fulfilled, if the refund window has expired, or if the purchase violated terms of service."
+        }
+    ]
+}

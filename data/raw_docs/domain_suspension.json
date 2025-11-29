@@ -1,0 +1,22 @@
+{
+    "policy_id": "Domain Suspension Guidelines",
+    "description": "Synthetic policy describing reasons for domain suspension and reactivation steps.",
+  
+    "sections": [
+        {
+            "section_id": "4.1",
+            "title": "Suspension Reasons",
+            "text": "Domains may be suspended due to missing WHOIS information, unresolved abuse complaints, or policy violations."
+        },
+        {
+            "section_id": "4.2",
+            "title": "Reactivation Requirements",
+            "text": "To reactivate a suspended domain, users must update their WHOIS data and resolve any outstanding compliance issues."
+        },
+        {
+            "section_id": "4.3",
+            "title": "Notification Policy",
+            "text": "Notification emails are typically sent 48 hours prior to suspension unless severe abuse is detected."
+        }
+    ]
+}

@@ -51,15 +51,19 @@ def build_prompt(query: str, docs: list):
         "action_required": "escalate_to_abuse_team"
     }}
 
-    USER TICKET:
-    {query}
+    CONSTRAINTS:
+    - Provide answers strictly based on the provided documents.
+    - Output must be in valid JSON format as specified.
 
-    OUTPUT FORMAT:
+    OUTPUT SCHEMA:
     {{
         "answer": "<short helpful explanation>",
         "references": ["<policy name - section title>"],
         "action_required": "<a concise, descriptive action like 'escalate_to_abuse_team' based on the analysis.>"
     }}
+
+    USER TICKET:
+    {query}
     """
 
     return prompt.strip()

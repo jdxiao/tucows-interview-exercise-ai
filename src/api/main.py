@@ -8,7 +8,7 @@ app = FastAPI(title="RAG Knowledge Assistant")
 
 # Request body model
 class TicketRequest(BaseModel):
-    ticket_text: str
+    ticket: str
 
 # Response model
 class TicketResponse(BaseModel):
@@ -26,7 +26,7 @@ def resolve_query(request: TicketRequest):
     Returns:
         TicketResponse: The structured response from the LLM.
     """
-    response = generate_response(request.ticket_text, top_k=1)
+    response = generate_response(request.ticket, top_k=1)
     return response
 
 # Health check endpoint

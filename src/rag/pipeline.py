@@ -22,7 +22,7 @@ def build_prompt(query: str, docs: list):
     """
 
     context = "\n\n".join(
-        [f"{doc['policy']}:\nText: {doc['text']}" for doc in docs]
+        [f"{doc['policy']} — Section {doc['section']} ({doc['title']}):\n{doc['text']}" for doc in docs]
     )
 
     prompt = f"""
@@ -35,24 +35,31 @@ def build_prompt(query: str, docs: list):
     {context}
 
     TASK: 
-    Analyze the user's support ticket.
-    Generate an answer using only the provided context.
-    If the context does not contain the answer, respond with "Insufficient information to answer the query."
+    1. Analyze the user ticket.
+    2. Analyze the provided policy documents.
+    3. Generate a concise answer to the user's query based on the documents.
+    4. Determine which policy sections were referenced.
+    5. Assign an appropriate action required based on the analysis in the format action_required_by_policy.
 
-    CONSTRAINTS:
-    - Use only the provided context to formulate your response.
-    - Provide clear, concise, and actionable information.
-    - Format your response in the required output JSON structure.
+    EXAMPLES:
 
-    OUTPUT FORMAT:
+    Query: "My domain was suspended and I didn’t get any notice. How can I reactivate it?"
+    Output JSON:
     {{
-        "answer": "<short helpful explanation>",
-        "references": ["<policy names or sections used>"],
-        "action_required": "<a concise, descriptive action like 'escalate_to_abuse_team' or 'none' if no action is needed>"
+        "answer": "Your domain may have been suspended due to a violation of policy or missing WHOIS information. Please update your WHOIS details and contact support.",
+        "references": ["Policy: Domain Suspension Guidelines, Section 4.2"],
+        "action_required": "escalate_to_abuse_team"
     }}
 
     USER TICKET:
     {query}
+
+    OUTPUT FORMAT:
+    {{
+        "answer": "<short helpful explanation>",
+        "references": ["<policy name - section title>"],
+        "action_required": "<a concise, descriptive action like 'escalate_to_abuse_team' based on the analysis.>"
+    }}
     """
 
     return prompt.strip()

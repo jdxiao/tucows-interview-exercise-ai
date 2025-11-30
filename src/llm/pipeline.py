@@ -1,4 +1,4 @@
-# src/rag/pipeline.py
+# src/llm/pipeline.py
 
 # Pipeline module for RAG system
 # Integrates retriever and generator components
@@ -6,6 +6,7 @@
 from src.rag.retriever import retrieve_docs
 import subprocess
 import json
+import regex as re
 
 def build_prompt(query: str, docs: list):
     """
@@ -31,20 +32,21 @@ def build_prompt(query: str, docs: list):
     and produces structured, actionable responses based on retrieved documentation.
 
     CONTEXT:
-    The following policy documents are provided to assist in answering the query:
+    The following policy documents are provided to assist in answering the ticket:
     {context}
 
     TASK: 
     1. Analyze the user ticket.
     2. Analyze the provided policy documents.
-    3. Generate a concise answer to the user's query based on the documents.
+    3. Generate a concise answer to the user's ticket based on the documents.
     4. Determine which policy sections were referenced.
     5. Assign an appropriate action required based on the analysis in the format action_required_by_policy.
+    6. Output the response strictly in the specified JSON format.
 
     EXAMPLES:
 
-    Query: "My domain was suspended and I didn’t get any notice. How can I reactivate it?"
-    Output JSON:
+    Ticket: "My domain was suspended and I didn’t get any notice. How can I reactivate it?"
+    Output:
     {{
         "answer": "Your domain may have been suspended due to a violation of policy or missing WHOIS information. Please update your WHOIS details and contact support.",
         "references": ["Policy: Domain Suspension Guidelines, Section 4.2"],
@@ -53,7 +55,10 @@ def build_prompt(query: str, docs: list):
 
     CONSTRAINTS:
     - Provide answers strictly based on the provided documents.
-    - Output must be in valid JSON format as specified.
+    - Output must be a single JSON object with keys: answer, references, action_required.
+    - Do not include any explanations outside the JSON format.
+    - Do not include any formatting or markdown in the output.
+    - The output schema is defined below.
 
     OUTPUT SCHEMA:
     {{
@@ -64,12 +69,15 @@ def build_prompt(query: str, docs: list):
 
     USER TICKET:
     {query}
+
+    FINAL INSTRUCTION:
+    Respond with ONLY the JSON. Do not say anything else.
     """
 
     return prompt.strip()
 
 
-def call_llm(prompt: str, model: str = "mistral"):
+def call_llm(prompt: str, model: str = "llama3.2:1b"):
     """
     Call Ollama model locally to generate a response based on the prompt.
 
@@ -85,6 +93,38 @@ def call_llm(prompt: str, model: str = "mistral"):
     )
     
     return result.stdout.decode().strip()
+
+
+def extract_json(response: str):
+    """
+    Extract JSON object from LLM response string.
+
+    Args:
+        response (str): The raw response string from the LLM.
+
+    Returns:
+        dict: The extracted JSON object.
+    """
+    matches = re.findall(r'\{(?:[^{}]|(?R))*\}', response, re.DOTALL)
+
+    if not matches:
+        return {
+            "answer": "Error: Unable to parse LLM response.",
+            "references": [],
+            "action_required": "none"
+        }
+
+    # Take final JSON object found in event of multiple reasoning steps
+    final_json = matches[-1]
+
+    try:
+        return json.loads(final_json)
+    except json.JSONDecodeError:
+        return {
+            "answer": "Error: Unable to parse LLM response.",
+            "references": [],
+            "action_required": "none"
+        }
 
 
 def generate_response(query: str, top_k: int = 1):
@@ -104,14 +144,8 @@ def generate_response(query: str, top_k: int = 1):
     prompt = build_prompt(query, docs)
     response = call_llm(prompt)
     
-    try:
-        response_json = json.loads(response)
-    except json.JSONDecodeError:
-        response_json = {
-            "answer": "Error: Unable to parse LLM response.",
-            "references": [],
-            "action_required": "none"
-        }
+    # Extract JSON from LLM response
+    response_json = extract_json(response)
 
     return response_json
 
@@ -125,4 +159,4 @@ if __name__ == "__main__":
 
     for query in test_queries:
         print(f"Query: {query}")
-        print(generate_response(query))
+        print(f"Response: {generate_response(query, top_k=1)}\n")

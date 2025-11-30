@@ -4,12 +4,13 @@
 # Utilizes sample index for initial testing and development
 
 import numpy as np
-from src.index.faiss_index import get_index, get_section_map, get_model
+from src.index.faiss_index import FAISSIndex
 
 # Load FAISS components
-index = get_index()
-model = get_model()
-section_map = get_section_map()
+faiss_index = FAISSIndex()
+index = faiss_index.get_index()
+model = faiss_index.get_model()
+section_map = faiss_index.get_section_map()
 
 def retrieve_docs(query: str, top_k: int = 1):
     """

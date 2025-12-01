@@ -17,7 +17,7 @@ class TicketResponse(BaseModel):
     action_required: str
 
 @app.post("/resolve-ticket", response_model=TicketResponse)
-def resolve_query(request: TicketRequest):
+def resolve_ticket(request: TicketRequest):
     """
     Endpoint to handle user queries and return structured responses.
 
@@ -26,7 +26,28 @@ def resolve_query(request: TicketRequest):
     Returns:
         TicketResponse: The structured response from the LLM.
     """
-    response = generate_response(request.ticket_text, top_k=1)
+    if not request.ticket_text or not request.ticket_text.strip():
+        return TicketResponse(
+            answer="Error: Empty ticket provided.",
+            references=[],
+            action_required="none"
+        )
+    try:
+        response = generate_response(request.ticket_text, top_k=1)
+    except Exception as e:
+        response = {
+            "answer": f"Error processing the ticket: {e}",
+            "references": [],
+            "action_required": "none"
+        }
+
+    if not all(k in response for k in ("answer", "references", "action_required")):
+        response = {
+            "answer": "Error: Incomplete response from LLM.",
+            "references": [],
+            "action_required": "none"
+        }
+    
     return response
 
 # Health check endpoint

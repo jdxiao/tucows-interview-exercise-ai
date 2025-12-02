@@ -67,7 +67,7 @@ def build_prompt(ticket: str, docs: list):
     OUTPUT SCHEMA:
     {{
         "answer": "<short helpful explanation>",
-        "references": ["<policy name - section title>"],
+        "references": ["Policy: <policy name - section title>"],
         "action_required": "<action_required_by_policy>"
     }}
 

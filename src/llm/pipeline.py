@@ -8,9 +8,22 @@ import subprocess
 import json
 import regex as re
 import logging
+from gpt4all import GPT4All
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+# Use donwloaded model inside Docker
+MODEL_DIR = "/app/models" 
+MODEL_NAME = "TinyLlama-1.1B-32k-f16.gguf" 
+gpt_model = GPT4All( 
+    model_name=MODEL_NAME, 
+    model_path=MODEL_DIR, 
+    allow_download=False, 
+    device="cpu", 
+    n_threads=4, 
+    verbose=True 
+)
 
 def build_prompt(ticket: str, docs: list):
     """
@@ -81,32 +94,20 @@ def build_prompt(ticket: str, docs: list):
     return prompt.strip()
 
 
-def call_llm(prompt: str, model: str = "llama3.2:1b"):
+def call_llm(prompt: str):
     """
-    Call Ollama model locally to generate a response based on the prompt.
+    Call the LLM with the constructed prompt.
 
     Args:
         prompt (str): The input prompt for the LLM.
-        model (str): The Ollama model to use.
 
     Returns:
         str: The raw response from the LLM.
     """
-    try:
-        result = subprocess.run(
-            ["ollama", "run", model],
-            input=prompt.encode(),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            check=True
-        )
-        stdout = result.stdout.decode().strip()
-        stderr = result.stderr.decode().strip()
-        if stderr:
-            logger.warning(f"LLM STDERR: {stderr}")
-        return stdout
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Error calling Ollama model: {e}")
+    try: 
+        return gpt_model.generate(prompt) 
+    except Exception as e: 
+        logging.error(f"Error calling LLM: {e}")
         return ""
 
 def extract_json(response: str):

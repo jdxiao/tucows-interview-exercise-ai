@@ -1,0 +1,38 @@
+# Ignore Python virtual environments
+.venv/
+env/
+venv/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore tests
+tests/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore Git
+.git/
+.gitignore
+
+# Ignore IDE settings
+.vscode/
+.idea/
+
+# Ignore build artifacts
+dist/
+build/
+*.egg-info/
+
+# Ignore Docker-compose logs or volumes
+docker-data/
+docker-volumes/
+
+# Ignore temp files
+*.log
+*.tmp
+*.bak
